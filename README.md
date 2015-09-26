@@ -20,4 +20,4 @@ This project doesn't commit pod dependencies to git, so make sure you run pod in
 - Changes will be automatically synced to dropbox account once internet connection is available 
 
 ##### Note 
-For the sake of simplicity, iNotes currently store Note content as {randomI}.txt in linked dropbox account
+For the sake of simplicity, iNotes currently store Note content as {random-id}.txt in linked dropbox account
