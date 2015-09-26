@@ -72,8 +72,6 @@ class DBSyncService : NSObject, DBRestClientDelegate {
         NSUserDefaults.standardUserDefaults().synchronize()
         
         pendingSync = syncs
-        
-        print("pendingSync : \(getPendingSync())")
     }
     
     func clearAllPendingSync(){
@@ -117,7 +115,6 @@ class DBSyncService : NSObject, DBRestClientDelegate {
         addToPendingSync(note)
         
         if let checker = networkChecker where checker.isReachable(){
-            print("syncing id : \(note.id)")
             if deleted {
                 
                 dispatch_async(dispatch_get_main_queue(), {  [unowned self] () -> Void in
@@ -140,8 +137,6 @@ class DBSyncService : NSObject, DBRestClientDelegate {
     
     func restClient(client: DBRestClient!, uploadedFile destPath: String!, from srcPath: String!, metadata: DBMetadata!) {
         
-        print("uploaded successfully to path: \(metadata.path)")
-        
         let noteId = metadata.filename.stringByReplacingOccurrencesOfString(".txt", withString: "")
         
         removeIdFromSync(noteId)
@@ -152,11 +147,6 @@ class DBSyncService : NSObject, DBRestClientDelegate {
             NoteService.sharedInstance.saveNoteMeta(note)
         }
     }
-    
-    func restClient(client: DBRestClient!, uploadFileFailedWithError error: NSError!) {
-        print("error : \(error.description)")
-    }
-    
     
     // delete delegates
     func restClient(client: DBRestClient!, deletedPath path: String!) {
@@ -231,17 +221,14 @@ class DBSyncService : NSObject, DBRestClientDelegate {
                 if let checker = self.networkChecker where checker.isReachable(), let sync = self.getPendingSync() where sync.count > 0 {
                     
                     for (id, retry) in sync {
+                        
                         if let note = NoteService.sharedInstance.getNote(id) {
-                            
-                            print("sync for note id : \(id)")
                             
                             self.syncNote(note, deleted: false)
                             
                         }else {
                             // deleted
-                            
-                            print("deleting for note id : \(id)")
-                            
+                        
                             self.syncNote(Note(id, title:""), deleted: true)
                         }
                         
@@ -253,7 +240,6 @@ class DBSyncService : NSObject, DBRestClientDelegate {
             }
             })
     }
-    
     
     func stopSyncChecker(){
         

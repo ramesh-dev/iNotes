@@ -121,6 +121,7 @@ class SettingsViewController: UITableViewController, DBLinkTableViewCellDelegate
     func restClient(client: DBRestClient!, loadAccountInfoFailedWithError error: NSError!) {
         
         print("error : \(error)")
+        
         DBSession.sharedSession().unlinkAll()
         self.alertHud?.showText("Unable to connect account", detailMsg: "Please try again", delay: 2)
     }
